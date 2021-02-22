@@ -16,8 +16,22 @@ createNewEmptyWallet(bool selector)
 setNewEmptyWallet(address value0)
 
 Root
-0x4afee5881a9c911df66064eab46b5c49f4efb7ccd7b19cbb0efef250836218d5
-0xaea887e196ecc21e8289dac5106a52d93ead0d97aa57a0ae27439f005839797b
+0:4afee5881a9c911df66064eab46b5c49f4efb7ccd7b19cbb0efef250836218d5
+{
+  "public": "35002b6f8489c74a2f16b0186f9775f8a1da1a1ad2bd74732f83fbc48555e3a4",
+  "secret": "f76f890eae142168a36eed46a0aef5b28bee39e8701d91361944aa88a0a87c18"
+}
+0:aea887e196ecc21e8289dac5106a52d93ead0d97aa57a0ae27439f005839797b
+
+
+    "name": "getWalletAddress",
+    "inputs": [
+    { "name":"workchain_id", "type":"int8" },
+    { "name":"pubkey", "type":"uint256" },
+    { "name":"owner_std_addr", "type":"uint256" }
+    ]
+
+../tonos-cli run 0:4afee5881a9c911df66064eab46b5c49f4efb7ccd7b19cbb0efef250836218d5 getWalletAddress '{"workchain_id":0,"pubkey":"0x35002b6f8489c74a2f16b0186f9775f8a1da1a1ad2bd74732f83fbc48555e3a4","owner_std_addr":0}' --abi ./RootTokenContract.abi
 
 ../tonos-cli run 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db getTongrams {} --abi ./DEXgastracker.abi.json
 
@@ -65,3 +79,5 @@ Root
 
 
 ../tonos-cli call 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db setTongrams '{"forNewWallet":5000000000, "forRoot":10000000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
+
+
