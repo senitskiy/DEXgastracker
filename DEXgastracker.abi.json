@@ -5,8 +5,8 @@
 		{
 			"name": "setTongrams",
 			"inputs": [
-				{"name":"msgGramPrice1","type":"uint128"},
-				{"name":"msgGramPrice2","type":"uint128"}
+				{"name":"forNewWallet","type":"uint128"},
+				{"name":"forRoot","type":"uint128"}
 			],
 			"outputs": [
 			]
@@ -16,22 +16,23 @@
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"msgGramPrice1","type":"uint128"},
-				{"name":"msgGramPrice2","type":"uint128"}
+				{"name":"forNewWallet","type":"uint128"},
+				{"name":"forRoot","type":"uint128"}
 			]
 		},
 		{
 			"name": "getWalletAddr",
 			"inputs": [
+				{"name":"root","type":"address"}
 			],
 			"outputs": [
-				{"name":"walletValue","type":"address"}
+				{"name":"walletsArr","type":"address[]"}
 			]
 		},
 		{
 			"name": "createNewEmptyWallet",
 			"inputs": [
-				{"name":"selector","type":"bool"}
+				{"name":"root","type":"address"}
 			],
 			"outputs": [
 				{"name":"createStatus","type":"bool"}

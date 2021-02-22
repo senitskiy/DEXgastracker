@@ -2,9 +2,9 @@
 ../tvm_linker compile DEXgastracker.code -o ./DEXgastracker.tvc --lib ../stdlib_sol.tvm
 ../tonos-cli genaddr DEXgastracker.tvc DEXgastracker.abi.json --genkey DEXgastracker.keys.json
 
-Seed phrase: "chase chair oil stool duck thing shoulder excite smooth stand country glare"
+Seed phrase: "scout hub royal better erupt brisk bicycle tone pretty silent cost cereal"
 
-Raw address: 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497
+Raw address: 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db
 
 ../tonos-cli deploy --abi DEXgastracker.abi.json --sign DEXgastracker.keys.json ./DEXgastracker.tvc {}
 
@@ -15,52 +15,53 @@ getWalletAddr()
 createNewEmptyWallet(bool selector)
 setNewEmptyWallet(address value0)
 
+Root
+0x4afee5881a9c911df66064eab46b5c49f4efb7ccd7b19cbb0efef250836218d5
+0xaea887e196ecc21e8289dac5106a52d93ead0d97aa57a0ae27439f005839797b
 
-../tonos-cli run 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 getTongrams {} --abi ./DEXgastracker.abi.json
+../tonos-cli run 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db getTongrams {} --abi ./DEXgastracker.abi.json
 
-../tonos-cli run 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 getWalletAddr {} --abi ./DEXgastracker.abi.json
+../tonos-cli run 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db getWalletAddr '{"root":"0:4afee5881a9c911df66064eab46b5c49f4efb7ccd7b19cbb0efef250836218d5"}' --abi ./DEXgastracker.abi.json
 
+../tonos-cli call 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db getWalletAddr '{"root":"0:4afee5881a9c911df66064eab46b5c49f4efb7ccd7b19cbb0efef250836218d5"}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
 
-../tonos-cli run 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 createNewEmptyWallet '{"selector":true}' --abi ./DEXgastracker.abi.json
+../tonos-cli run 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db createNewEmptyWallet '{"root":"0:4afee5881a9c911df66064eab46b5c49f4efb7ccd7b19cbb0efef250836218d5"}' --abi ./DEXgastracker.abi.json
 
-../tonos-cli run 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 createNewEmptyWallet '{"selector":false}' --abi ./DEXgastracker.abi.json
-
-../tonos-cli call 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 createNewEmptyWallet '{"selector":true}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
-
-../tonos-cli call 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 createNewEmptyWallet '{"selector":false}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
-
-
-
-../tonos-cli run 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 setNewEmptyWallet '{"value0":true}' --abi ./DEXgastracker.abi.json
+../tonos-cli call 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db createNewEmptyWallet '{"root":"0:4afee5881a9c911df66064eab46b5c49f4efb7ccd7b19cbb0efef250836218d5"}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
 
 
 
 
-../tonos-cli run 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 setTongrams '{"msgGramPrice1":400000000, "msgGramPrice2":600000000}'  --abi ./DEXgastracker.abi.json
-
-../tonos-cli call 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 setTongrams '{"msgGramPrice1":400000000, "msgGramPrice2":600000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
-
-../tonos-cli call 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 setTongrams '{"msgGramPrice1":300000000, "msgGramPrice2":500000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
-
-../tonos-cli call 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 setTongrams '{"msgGramPrice1":50000000, "msgGramPrice2":500000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
-
-../tonos-cli call 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 setTongrams '{"msgGramPrice1":200000000, "msgGramPrice2":500000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
+<!-- ../tonos-cli run 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db setNewEmptyWallet '{"value0":true}' --abi ./DEXgastracker.abi.json -->
 
 
 
 
-../tonos-cli call 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 setTongrams '{"msgGramPrice1":2000000, "msgGramPrice2":500000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
+../tonos-cli run 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db setTongrams '{"forNewWallet":400000000, "forRoot":600000000}'  --abi ./DEXgastracker.abi.json
+
+../tonos-cli call 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db setTongrams '{"forNewWallet":400000000, "forRoot":600000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
+
+../tonos-cli call 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db setTongrams '{"forNewWallet":300000000, "forRoot":500000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
+
+../tonos-cli call 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db setTongrams '{"forNewWallet":50000000, "forRoot":500000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
+
+../tonos-cli call 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db setTongrams '{"forNewWallet":200000000, "forRoot":500000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
 
 
 
 
-../tonos-cli call 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 setTongrams '{"msgGramPrice1":1000, "msgGramPrice2":500000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
-
-../tonos-cli call 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 setTongrams '{"msgGramPrice1":10, "msgGramPrice2":500000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
-
-
-../tonos-cli call 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 setTongrams '{"msgGramPrice1":1000000000, "msgGramPrice2":2000000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
+../tonos-cli call 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db setTongrams '{"forNewWallet":2000000, "forRoot":500000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
 
 
 
-../tonos-cli call 0:f25a9123cf2d022f7c918cca23dc1aa96317d35e0d4c0acc1612d4c73f4d0497 setTongrams '{"msgGramPrice1":5000000000, "msgGramPrice2":10000000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
+
+../tonos-cli call 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db setTongrams '{"forNewWallet":1000, "forRoot":500000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
+
+../tonos-cli call 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db setTongrams '{"forNewWallet":10, "forRoot":500000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
+
+
+../tonos-cli call 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db setTongrams '{"forNewWallet":1000000000, "forRoot":2000000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json
+
+
+
+../tonos-cli call 0:876e279838d21f3cd5b01d15bab72c10e5fa1576ab9288668ce7870b398376db setTongrams '{"forNewWallet":5000000000, "forRoot":10000000000}' --sign ./DEXgastracker.keys.json --abi ./DEXgastracker.abi.json

@@ -29,26 +29,26 @@ PUSHCONT {
 }
 IF
 ; Decode input parameters
-; Decode msgGramPrice1
+; Decode forNewWallet
 LDU 128
-; Decode msgGramPrice2
+; Decode forRoot
 LDU 128
 ENDS
-;; param: msgGramPrice1
-;; param: msgGramPrice2
+;; param: forNewWallet
+;; param: forRoot
 ; modifier alwaysAccept
 ACCEPT
 ; function setTongrams
 ; expValue
 ; end expValue
-;; push identifier msgGramPrice1
+;; push identifier forNewWallet
 PUSH S1
 ; colValue
 SETGLOB 11
 ; end colValue
 ; expValue
 ; end expValue
-;; push identifier msgGramPrice2
+;; push identifier forRoot
 DUP
 ; colValue
 SETGLOB 12
@@ -62,21 +62,21 @@ SETGLOB 7
 
 .globl	setTongrams_internal
 .type	setTongrams_internal, @function
-;; param: msgGramPrice1
-;; param: msgGramPrice2
+;; param: forNewWallet
+;; param: forRoot
 ; modifier alwaysAccept
 ACCEPT
 ; function setTongrams
 ; expValue
 ; end expValue
-;; push identifier msgGramPrice1
+;; push identifier forNewWallet
 PUSH S1
 ; colValue
 SETGLOB 11
 ; end colValue
 ; expValue
 ; end expValue
-;; push identifier msgGramPrice2
+;; push identifier forRoot
 DUP
 ; colValue
 SETGLOB 12
@@ -99,9 +99,9 @@ ENDS
 ; modifier alwaysAccept
 ACCEPT
 ; function getTongrams
-;; ret param: msgGramPrice1
+;; ret param: forNewWallet
 PUSHINT 0
-;; ret param: msgGramPrice2
+;; ret param: forRoot
 PUSHINT 0
 ; expValue
 ; end expValue
@@ -160,9 +160,9 @@ SETGLOB 7
 ; modifier alwaysAccept
 ACCEPT
 ; function getTongrams
-;; ret param: msgGramPrice1
+;; ret param: forNewWallet
 PUSHINT 0
-;; ret param: msgGramPrice2
+;; ret param: forRoot
 PUSHINT 0
 ; expValue
 ; end expValue
@@ -196,25 +196,46 @@ PUSHCONT {
 }
 IF
 ; Decode input parameters
+; Decode root
+LDMSGADDR
 ENDS
+;; param: root
 ; modifier alwaysAccept
 ACCEPT
 ; function getWalletAddr
-;; ret param: walletValue
-PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+;; ret param: walletsArr
+PUSHINT 0
+NEWDICT
+PAIR
 ; expValue
 ; end expValue
-;; push identifier walletAddr
+;; index
+;; push identifier root
+PUSH S1
+;; push identifier rootWallets
 GETGLOB 10
+PUSHINT 267
+DICTGET
+PUSHCONT {
+	LDU 32
+	PLDDICT
+	PAIR
+}
+PUSHCONT {
+	PUSHINT 0
+	NEWDICT
+	PAIR
+}
+IFELSE
 ; colValue
 NIP
 ; end colValue
 ;; returning named params
 ;; emitting 1 value(s)
-PUSH S1
+PUSH S2
 EQINT -1
 PUSHCONT {
-	PUSH S3
+	PUSH S4
 	CTOS
 	LDU 2
 	LDMSGADDR
@@ -227,9 +248,12 @@ PUSHCONT {
 	STZEROES
 	STSLICECONST 0
 	STSLICECONST 0
-	STSLICECONST x868caefb
+	STSLICECONST x9aafa623
 	PUSH S1
-	STSLICER
+	UNPAIR
+	XCHG s2
+	STU 32
+	STDICT
 	ENDC
 	PUSHINT 1
 	SENDRAWMSG
@@ -237,6 +261,7 @@ PUSHCONT {
 IF
 DROP
 ; end function getWalletAddr
+DROP
 ; end modifier alwaysAccept
 PUSHCONT {
 	CALL $c7_to_c4$
@@ -247,15 +272,34 @@ SETGLOB 7
 
 .globl	getWalletAddr_internal
 .type	getWalletAddr_internal, @function
+;; param: root
 ; modifier alwaysAccept
 ACCEPT
 ; function getWalletAddr
-;; ret param: walletValue
-PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+;; ret param: walletsArr
+PUSHINT 0
+NEWDICT
+PAIR
 ; expValue
 ; end expValue
-;; push identifier walletAddr
+;; index
+;; push identifier root
+PUSH S1
+;; push identifier rootWallets
 GETGLOB 10
+PUSHINT 267
+DICTGET
+PUSHCONT {
+	LDU 32
+	PLDDICT
+	PAIR
+}
+PUSHCONT {
+	PUSHINT 0
+	NEWDICT
+	PAIR
+}
+IFELSE
 ; colValue
 NIP
 ; end colValue
@@ -263,9 +307,19 @@ NIP
 TUPLE 1
 SETGLOB 8
 ; end function getWalletAddr
+DROP
 ; end modifier alwaysAccept
 GETGLOB 8
 UNTUPLE 1
+
+.globl	createWalletId_internal
+.type	createWalletId_internal, @function
+; function createWalletId
+LTIME
+ADDRAND
+;; return
+RANDSEED
+; end function createWalletId
 
 .globl	createNewEmptyWallet
 .public	createNewEmptyWallet
@@ -277,10 +331,10 @@ PUSHCONT {
 }
 IF
 ; Decode input parameters
-; Decode selector
-LDI 1
+; Decode root
+LDMSGADDR
 ENDS
-;; param: selector
+;; param: root
 ; modifier alwaysAccept
 ACCEPT
 ; function createNewEmptyWallet
@@ -292,21 +346,11 @@ FALSE
 ; colValue
 NIP
 ; end colValue
-;; push identifier selector
+;; push identifier root
 PUSH S1
-TRUE
-;; ==
-EQUAL
-PUSHCONT {
-	;; push identifier rootA
-	GETGLOB 14
-}
-PUSHCONT {
-	;; push identifier rootB
-	GETGLOB 16
-}
-IFELSE
 ;; decl: creator
+CALL $createWalletId_internal$
+;; decl: walletId
 MYADDR
 ;; decl: owner
 ;; get member value
@@ -325,7 +369,8 @@ STUR 32
 PUSHINT 0
 STIR 8
 ;; pubkey
-PUSHINT 0
+;; push identifier walletId
+PUSH S3
 STUR 256
 ;; internal_owner
 ;; push identifier ownerUINT
@@ -341,7 +386,7 @@ ENDC
 ;; push identifier tongrams2
 GETGLOB 12
 ;; push identifier creator
-PUSH S4
+PUSH S5
 NEWC
 STSLICECONST x42_
 STSLICE
@@ -361,10 +406,10 @@ SENDRAWMSG
 ; end expValue
 TRUE
 ; colValue
-POP s5
+POP s6
 ; end colValue
 ;; returning named params
-BLKDROP 4
+BLKDROP 5
 ;; emitting 1 value(s)
 PUSH S2
 EQINT -1
@@ -382,7 +427,7 @@ PUSHCONT {
 	STZEROES
 	STSLICECONST 0
 	STSLICECONST 0
-	STSLICECONST xd7647358
+	STSLICECONST xc2a84600
 	PUSH S1
 	STIR 1
 	ENDC
@@ -403,7 +448,7 @@ SETGLOB 7
 
 .globl	createNewEmptyWallet_internal
 .type	createNewEmptyWallet_internal, @function
-;; param: selector
+;; param: root
 ; modifier alwaysAccept
 ACCEPT
 ; function createNewEmptyWallet
@@ -415,21 +460,11 @@ FALSE
 ; colValue
 NIP
 ; end colValue
-;; push identifier selector
+;; push identifier root
 PUSH S1
-TRUE
-;; ==
-EQUAL
-PUSHCONT {
-	;; push identifier rootA
-	GETGLOB 14
-}
-PUSHCONT {
-	;; push identifier rootB
-	GETGLOB 16
-}
-IFELSE
 ;; decl: creator
+CALL $createWalletId_internal$
+;; decl: walletId
 MYADDR
 ;; decl: owner
 ;; get member value
@@ -448,7 +483,8 @@ STUR 32
 PUSHINT 0
 STIR 8
 ;; pubkey
-PUSHINT 0
+;; push identifier walletId
+PUSH S3
 STUR 256
 ;; internal_owner
 ;; push identifier ownerUINT
@@ -464,7 +500,7 @@ ENDC
 ;; push identifier tongrams2
 GETGLOB 12
 ;; push identifier creator
-PUSH S4
+PUSH S5
 NEWC
 STSLICECONST x42_
 STSLICE
@@ -484,10 +520,10 @@ SENDRAWMSG
 ; end expValue
 TRUE
 ; colValue
-POP s5
+POP s6
 ; end colValue
 ;; returning named params
-BLKDROP 4
+BLKDROP 5
 TUPLE 1
 SETGLOB 8
 ; end function createNewEmptyWallet
@@ -517,10 +553,47 @@ ACCEPT
 GETGLOB 9
 ;; decl: root
 ; expValue
+;; fetch rootWallets
+GETGLOB 10
+;; push identifier root
+PUSH S1
+SWAP
+PUSH2 S1, S0
+PUSHINT 267
+DICTGET
+PUSHCONT {
+	LDU 32
+	PLDDICT
+	PAIR
+}
+PUSHCONT {
+	PUSHINT 0
+	NEWDICT
+	PAIR
+}
+IFELSE
 ; end expValue
 ;; push identifier value0
+PUSH S4
+;; array.push(..)
+SWAP
+UNPAIR
 PUSH S1
+INC
+XCHG s3
+ROTREV
+PUSHINT 32
+DICTUSET
+PAIR
 ; colValue
+UNPAIR
+SWAP
+NEWC
+STU 32
+STDICT
+ROTREV
+PUSHINT 267
+DICTSETB
 SETGLOB 10
 ; end colValue
 DROP
@@ -541,10 +614,47 @@ ACCEPT
 GETGLOB 9
 ;; decl: root
 ; expValue
+;; fetch rootWallets
+GETGLOB 10
+;; push identifier root
+PUSH S1
+SWAP
+PUSH2 S1, S0
+PUSHINT 267
+DICTGET
+PUSHCONT {
+	LDU 32
+	PLDDICT
+	PAIR
+}
+PUSHCONT {
+	PUSHINT 0
+	NEWDICT
+	PAIR
+}
+IFELSE
 ; end expValue
 ;; push identifier value0
+PUSH S4
+;; array.push(..)
+SWAP
+UNPAIR
 PUSH S1
+INC
+XCHG s3
+ROTREV
+PUSHINT 32
+DICTUSET
+PAIR
 ; colValue
+UNPAIR
+SWAP
+NEWC
+STU 32
+STDICT
+ROTREV
+PUSHINT 267
+DICTSETB
 SETGLOB 10
 ; end colValue
 DROP
@@ -561,25 +671,11 @@ GETGLOB 3
 STUR 64
 GETGLOB 6
 STUR 1
-NEWC
-GETGLOB 13
-GETGLOB 14
-GETGLOB 15
-REVERSE 4, 0
-STU 256
-STSLICE
-STU 256
-NEWC
-GETGLOB 16
-SWAP
-STSLICE
 GETGLOB 10
 GETGLOB 11
 GETGLOB 12
-REVERSE 6, 0
-STBREF
-STBREF
-STSLICE
+REVERSE 4, 0
+STDICT
 STU 128
 STU 128
 ENDC
@@ -592,16 +688,7 @@ CTOS        ; c4
 LDU 256      ; pubkey c4
 LDU 64      ; pubkey timestamp c4
 LDU 1       ; pubkey [timestamp] constructor_flag memory
-LDREFRTOS
-LDU 256
-LDMSGADDR
-PLDU 256
-SETGLOB 15
-SETGLOB 14
-SETGLOB 13
-LDREFRTOS
-SETGLOB 16
-LDMSGADDR
+LDDICT
 LDU 128
 PLDU 128
 SETGLOB 12
@@ -623,16 +710,7 @@ PUSHCONT {
 	LDU 256      ; pubkey c4
 	LDU 64      ; pubkey timestamp c4
 	LDU 1       ; pubkey [timestamp] constructor_flag memory
-	LDREFRTOS
-	LDU 256
-	LDMSGADDR
-	PLDU 256
-	SETGLOB 15
-	SETGLOB 14
-	SETGLOB 13
-	LDREFRTOS
-	SETGLOB 16
-	LDMSGADDR
+	LDDICT
 	LDU 128
 	PLDU 128
 	SETGLOB 12
@@ -646,8 +724,8 @@ PUSHCONT {
 }
 PUSHCONT {
 	PLDDICT   ; D
-	; init walletAddr
-	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	; init rootWallets
+	NEWDICT
 	SETGLOB 10
 	; init tongrams1
 	PUSHINT 0
@@ -655,18 +733,6 @@ PUSHCONT {
 	; init tongrams2
 	PUSHINT 0
 	SETGLOB 12
-	; init address_rootA
-	PUSHINT 0
-	SETGLOB 13
-	; init rootA
-	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	SETGLOB 14
-	; init address_rootB
-	PUSHINT 0
-	SETGLOB 15
-	; init rootB
-	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	SETGLOB 16
 	; set contract pubkey
 	PUSHINT 0
 	SWAP
@@ -681,30 +747,6 @@ PUSHCONT {
 	SETGLOB 6
 	TRUE
 	SETGLOB 1
-	;; init state var: address_rootA
-	PUSHINT 93794146568390755908342853228934221902594463942501567747415835134022554818721
-	SETGLOB 13
-	;; init state var: rootA
-	;; push identifier address_rootA
-	GETGLOB 13
-	NEWC
-	STSLICECONST x801_
-	STU 256
-	ENDC
-	CTOS
-	SETGLOB 14
-	;; init state var: address_rootB
-	PUSHINT 106132245589780589343046278313496989080219313520693930575977978697899183187262
-	SETGLOB 15
-	;; init state var: rootB
-	;; push identifier address_rootB
-	GETGLOB 15
-	NEWC
-	STSLICECONST x801_
-	STU 256
-	ENDC
-	CTOS
-	SETGLOB 16
 }
 IFELSE
 
